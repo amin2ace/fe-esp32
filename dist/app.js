@@ -1,15 +1,6 @@
 class WindingController {
     constructor() {
         // Initialize elements using an object
-        const elementId = [
-            "wireDiameter",
-            "coilWidth",
-            "layerCount",
-            "windingThickness",
-            "confirmButton",
-            "startWindingButton",
-            "progressBar",
-        ];
         this.inputElements = {
             wireDiameterInput: document.getElementById("wireDiameter"),
             coilWidthInput: document.getElementById("coilWidth"),
@@ -19,17 +10,17 @@ class WindingController {
             startWindingButton: document.getElementById("startWindingButton"),
             progressBar: document.getElementById("progressBar"),
         };
-        this.inputElements.startWindingButton.disabled = true;
         this.initializeEvents();
     }
     // Initialize event listeners
     initializeEvents() {
+        // Start button should be disabled in the beginning
+        this.inputElements.startWindingButton.disabled = true;
         this.inputElements.confirmButton.addEventListener("click", () => this.onConfirmButton());
         this.inputElements.startWindingButton.addEventListener("click", () => this.startWinding());
     }
     // Validate inputs
-    validateElementInputs() {
-        const { wireDiameterInput, coilWidthInput, layerCountInput } = this.inputElements;
+    validateElementInputs(wireDiameterInput, coilWidthInput, layerCountInput) {
         if (!wireDiameterInput.value ||
             !coilWidthInput.value ||
             !layerCountInput.value) {
@@ -47,9 +38,7 @@ class WindingController {
         return true;
     }
     // Calculate winding thickness
-    calculateWireThickness() {
-        const diameter = parseFloat(this.inputElements.wireDiameterInput.value);
-        const layers = parseInt(this.inputElements.layerCountInput.value);
+    calculateWireThickness(diameter, layers) {
         if (!diameter || !layers) {
             return "نامشخص";
         }
@@ -67,16 +56,18 @@ class WindingController {
     }
     // Handle confirm button logic
     onConfirmButton() {
-        if (!this.validateElementInputs()) {
+        const { wireDiameterInput, coilWidthInput, layerCountInput } = this.inputElements;
+        if (!this.validateElementInputs(wireDiameterInput, coilWidthInput, layerCountInput)) {
             alert("Error");
         }
-        const thickness = this.calculateWireThickness();
+        const diameter = parseFloat(this.inputElements.wireDiameterInput.value);
+        const layers = parseInt(this.inputElements.layerCountInput.value);
+        const thickness = this.calculateWireThickness(diameter, layers);
         this.inputElements.windingThicknessInput.value = thickness;
         alert(`ضخامت سیم‌پیچی: ${thickness}`);
     }
     // Simulate progress bar
-    simulateProgress() {
-        let progress = 0;
+    simulateProgress(progress, timeOut) {
         const interval = setInterval(() => {
             progress += 10;
             this.inputElements.progressBar.style.width = progress + "%";
@@ -84,13 +75,13 @@ class WindingController {
                 clearInterval(interval);
                 alert("سیم‌پیچی کامل شد!");
             }
-        }, 500);
+        }, timeOut);
     }
     // Start the winding process
     startWinding() {
         console.log(this.getInputValues());
         this.inputElements.progressBar.style.width = "0%"; // Reset progress bar
-        this.simulateProgress(); // Start simulation
+        this.simulateProgress(0, 500); // Start simulation
     }
 }
 // Initialize the controller when the DOM is ready
