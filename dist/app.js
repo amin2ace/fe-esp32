@@ -9,6 +9,7 @@ class WindingController {
             confirmButton: document.getElementById("confirmButton"),
             startWindingButton: document.getElementById("startWindingButton"),
             progressBar: document.getElementById("progressBar"),
+            restartButton: document.getElementById("restartButton"),
         };
         this.initializeEvents();
     }
@@ -18,6 +19,7 @@ class WindingController {
         this.inputElements.startWindingButton.disabled = true;
         this.inputElements.confirmButton.addEventListener("click", () => this.onConfirmButton());
         this.inputElements.startWindingButton.addEventListener("click", () => this.startWinding());
+        this.inputElements.restartButton.addEventListener("click", () => this.startWinding());
     }
     // Validate inputs
     validateElementInputs(wireDiameterInput, coilWidthInput, layerCountInput) {
@@ -67,21 +69,27 @@ class WindingController {
         alert(`ضخامت سیم‌پیچی: ${thickness}`);
     }
     // Simulate progress bar
-    simulateProgress(progress, timeOut) {
+    simulateProgress(progress, totalTime) {
+        this.inputElements.progressBar.style.width = "0%"; // Reset progress bar
+        const timeOut = totalTime / 20;
+        // This is controlling the fill speed of progress bar
+        // Interval says 'do something and whait after every time done'
         const interval = setInterval(() => {
-            progress += 10;
+            progress += 5;
             this.inputElements.progressBar.style.width = progress + "%";
-            if (progress >= 100) {
+            // After progress bar filled
+            if (progress > 100) {
                 clearInterval(interval);
                 alert("سیم‌پیچی کامل شد!");
+                // Enable restart button
+                this.inputElements.restartButton.disabled = false;
             }
         }, timeOut);
     }
     // Start the winding process
     startWinding() {
         console.log(this.getInputValues());
-        this.inputElements.progressBar.style.width = "0%"; // Reset progress bar
-        this.simulateProgress(0, 500); // Start simulation
+        this.simulateProgress(0, 6000); // Start simulation
     }
 }
 // Initialize the controller when the DOM is ready

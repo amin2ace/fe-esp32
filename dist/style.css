@@ -139,7 +139,7 @@ button {
 #progressBar {
     height: 100%;
     width: 0%;
-    background-color: #4caf50;
+    background-color: #fb08086b;
     transition: width 0.4s ease;
 }
 

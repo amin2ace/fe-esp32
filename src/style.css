@@ -1,12 +1,12 @@
 /* Load custom fonts */
 @font-face {
     font-family: 'BTitr';
-    src: url('BTITRBD.TTF') format('truetype');
+    src: url('./font/BTITRBD.TTF') format('truetype');
 }
 
 @font-face {
     font-family: 'BNazanin';
-    src: url('BNAZANIN.TTF') format('truetype');
+    src: url('./font/BNAZNNBD.TTF') format('truetype');
 }
 
 /* Apply BTitr to titles */
@@ -139,7 +139,7 @@ button {
 #progressBar {
     height: 100%;
     width: 0%;
-    background-color: #4caf50;
+    background-color: #fb08086b;
     transition: width 0.4s ease;
 }
 

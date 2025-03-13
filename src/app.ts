@@ -7,6 +7,7 @@ class WindingController {
     confirmButton: HTMLButtonElement;
     startWindingButton: HTMLButtonElement;
     progressBar: HTMLElement;
+    restartButton: HTMLButtonElement;
   };
 
   constructor() {
@@ -30,6 +31,9 @@ class WindingController {
         "startWindingButton"
       ) as HTMLButtonElement,
       progressBar: document.getElementById("progressBar") as HTMLElement,
+      restartButton: document.getElementById(
+        "restartButton"
+      ) as HTMLButtonElement,
     };
 
     this.initializeEvents();
@@ -43,7 +47,12 @@ class WindingController {
     this.inputElements.confirmButton.addEventListener("click", () =>
       this.onConfirmButton()
     );
+
     this.inputElements.startWindingButton.addEventListener("click", () =>
+      this.startWinding()
+    );
+
+    this.inputElements.restartButton.addEventListener("click", () =>
       this.startWinding()
     );
   }
@@ -126,14 +135,21 @@ class WindingController {
   }
 
   // Simulate progress bar
-  private simulateProgress(progress: number, timeOut: number): void {
+  private simulateProgress(progress: number, totalTime: number): void {
+    const timeOut = totalTime / 20;
+    // This is controlling the fill speed of progress bar
+
+    // Interval says 'do something and whait after every time done'
     const interval = setInterval(() => {
-      progress += 10;
+      progress += 5;
       this.inputElements.progressBar.style.width = progress + "%";
 
-      if (progress >= 100) {
+      // After progress bar filled
+      if (progress > 100) {
         clearInterval(interval);
         alert("سیم‌پیچی کامل شد!");
+        // Enable restart button
+        this.inputElements.restartButton.disabled = false;
       }
     }, timeOut);
   }
@@ -141,8 +157,7 @@ class WindingController {
   // Start the winding process
   private startWinding(): void {
     console.log(this.getInputValues());
-    this.inputElements.progressBar.style.width = "0%"; // Reset progress bar
-    this.simulateProgress(0, 500); // Start simulation
+    this.simulateProgress(0, 6000); // Start simulation
   }
 }
 
