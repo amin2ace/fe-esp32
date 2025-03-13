@@ -1,0 +1,159 @@
+/* Load custom fonts */
+@font-face {
+    font-family: 'BTitr';
+    src: url('BTITRBD.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'BNazanin';
+    src: url('BNAZANIN.TTF') format('truetype');
+}
+
+/* Apply BTitr to titles */
+h2 {
+    font-family: 'BTitr', sans-serif;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Apply Nazanin to the rest of the text */
+body, input, button, label, p {
+    font-family: 'BNazanin', sans-serif;
+}
+
+body {
+    text-align: center;
+    direction: rtl;
+    background-color: #f0f2f5;
+}
+
+.container {
+    width: 95%;
+    max-width: 500px;
+    margin: auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: right;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #3f51b5;
+    outline: none;
+}
+
+button {
+    padding: 12px;
+    width: 100%;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.primary-btn {
+    background-color: #3f51b5;
+    color: #fff;
+}
+
+.primary-btn:hover {
+    background-color: #303f9f;
+}
+
+.secondary-btn {
+    background-color: #9e9e9e;
+    color: #fff;
+}
+
+.secondary-btn:hover {
+    background-color: #757575;
+}
+
+.success-btn {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.success-btn:hover {
+    background-color: #388e3c;
+}
+
+.danger-btn {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.danger-btn:hover {
+    background-color: #d32f2f;
+}
+
+.warning-btn {
+    background-color: #ff9800;
+    color: #fff;
+}
+
+.warning-btn:hover {
+    background-color: #f57c00;
+}
+
+#progressBarContainer {
+    width: 100%;
+    background-color: #eee;
+    height: 25px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+#progressBar {
+    height: 100%;
+    width: 0%;
+    background-color: #4caf50;
+    transition: width 0.4s ease;
+}
+
+.image-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.blinking {
+    animation: blink 1s infinite;
+    color: red;
+    font-weight: bold;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
