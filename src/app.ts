@@ -5,35 +5,50 @@ class WindingController {
     layerCountInput: HTMLInputElement;
     windingThicknessInput: HTMLInputElement;
     confirmButton: HTMLButtonElement;
+    homingButton: HTMLButtonElement;
     startWindingButton: HTMLButtonElement;
-    progressBar: HTMLElement;
     restartButton: HTMLButtonElement;
+    progressBar: HTMLElement;
+    statusMessage: HTMLElement;
   };
 
   constructor() {
-    // Initialize elements using an object
+    // Initialize elements
 
     this.inputElements = {
       wireDiameterInput: document.getElementById(
         "wireDiameter"
       ) as HTMLInputElement,
+
       coilWidthInput: document.getElementById("coilWidth") as HTMLInputElement,
+
       layerCountInput: document.getElementById(
         "layerCount"
       ) as HTMLInputElement,
+
       windingThicknessInput: document.getElementById(
         "windingThickness"
       ) as HTMLInputElement,
+
       confirmButton: document.getElementById(
         "confirmButton"
       ) as HTMLButtonElement,
+
+      homingButton: document.getElementById(
+        "homingButton"
+      ) as HTMLButtonElement,
+
       startWindingButton: document.getElementById(
         "startWindingButton"
       ) as HTMLButtonElement,
-      progressBar: document.getElementById("progressBar") as HTMLElement,
+
       restartButton: document.getElementById(
         "restartButton"
       ) as HTMLButtonElement,
+
+      progressBar: document.getElementById("progressBar") as HTMLElement,
+
+      statusMessage: document.getElementById("statusMessage") as HTMLElement,
     };
 
     this.initializeEvents();
@@ -42,18 +57,24 @@ class WindingController {
   // Initialize event listeners
   private initializeEvents(): void {
     // Start button should be disabled in the beginning
-    this.inputElements.startWindingButton.disabled = true;
+    // this.inputElements.startWindingButton.disabled = true;
+    // this.inputElements.confirmButton.disabled = true;
+    // this.inputElements.homingButton.disabled = false;
+
+    this.inputElements.homingButton.addEventListener("click", () =>
+      this.connectToDevice()
+    );
 
     this.inputElements.confirmButton.addEventListener("click", () =>
       this.onConfirmButton()
     );
 
     this.inputElements.startWindingButton.addEventListener("click", () =>
-      this.startWinding()
+      this.onStartWinding()
     );
 
     this.inputElements.restartButton.addEventListener("click", () =>
-      this.startWinding()
+      this.refreshPage()
     );
   }
 
@@ -131,7 +152,7 @@ class WindingController {
     const thickness = this.calculateWireThickness(diameter, layers);
     this.inputElements.windingThicknessInput.value = thickness;
 
-    alert(`ضخامت سیم‌پیچی: ${thickness}`);
+    // alert(`ضخامت سیم‌پیچی: ${thickness}`);
   }
 
   // Simulate progress bar
@@ -150,14 +171,58 @@ class WindingController {
         alert("سیم‌پیچی کامل شد!");
         // Enable restart button
         this.inputElements.restartButton.disabled = false;
+        this.inputElements.progressBar.style.width = "0%"; // Reset progress bar
       }
     }, timeOut);
   }
 
   // Start the winding process
-  private startWinding(): void {
+  private onStartWinding(): void {
     console.log(this.getInputValues());
+    this.sendDataToServer(this.getInputValues());
+    this.inputElements.progressBar.style.width = "0%"; // Reset progress bar
     this.simulateProgress(0, 6000); // Start simulation
+  }
+
+  // Method to stop blinking and turn text green and bold
+  public updateStatusToConnected(): void {
+    this.inputElements.statusMessage.classList.remove("blinking"); // Stop blinking
+    this.inputElements.statusMessage.classList.add("status-connected"); // Add green and bold styling
+    this.inputElements.statusMessage.textContent = "دستگاه سیم‌پیچی متصل شد"; // Update the message
+  }
+
+  public connectToDevice(): void {
+    console.log(`trying to connect...`);
+    this.sendDataToServer({ connect: "trying..." });
+    // Example: Call the method after 3 seconds (simulate connection)
+    setTimeout(() => {
+      this.updateStatusToConnected();
+      this.inputElements.confirmButton.disabled = false;
+    }, 5000);
+  }
+
+  // Method to refresh the page
+  private refreshPage(): void {
+    location.reload();
+  }
+
+  // Send data to the ESP32 server
+  public sendDataToServer(data: Object) {
+    fetch("/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.text())
+      .then((result) => {
+        console.log("Server Response:", result);
+        // alert("Data sent to ESP32 successfully!");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   }
 }
 

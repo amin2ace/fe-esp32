@@ -35,6 +35,18 @@ body {
     background-color: #f0f2f5;
 }
 
+/* Blinking animation (already defined) */
+.blinking {
+    animation: blink 1s infinite;
+    color: red;
+    font-weight: bold;
+}
+/* New style for connected status */
+.status-connected {
+    color: green;
+    font-weight: bold;
+}
+
 .container {
     width: 95%;
     max-width: 500px;
@@ -58,7 +70,7 @@ body {
 }
 
 .input-group input {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
